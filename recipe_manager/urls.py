@@ -16,14 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from recipes.views import UserViewSet, RecipeViewSet
+from django.http import HttpResponse
 
-router  = DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'recipes', RecipeViewSet)
+def home(request):
+    return HttpResponse("Welcome to the Recipe Management API. Go to /api/ to use the API.")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    path('api/', include('recipes.urls')),
+    path('', home),
 ]

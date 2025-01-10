@@ -12,9 +12,10 @@ class UserSerializer(serializers.ModelSerializer):
         user  =User.objects.create_user(**validated_data)
         return user
     
+
 class RecipeSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
-
+    
     class Meta:
         model = Recipe
-        fields = '__all__'
+        fields = ['id', 'title', 'description', 'ingredients', 'instructions', 'category', 'prep_time', 'cook_time', 'servings', 'created_date', 'user']

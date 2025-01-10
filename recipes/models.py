@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 
 
@@ -22,7 +23,9 @@ class Recipe(models.Model):
     cook_time = models.PositiveIntegerField(help_text="Cooking time in minutes")
     servings = models.PositiveIntegerField()
     created_date = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recipes")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name='recipes')
+
+    #user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recipes")
 
     def __str__(self):
         return self.title
