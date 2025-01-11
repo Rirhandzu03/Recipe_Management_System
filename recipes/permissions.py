@@ -5,5 +5,6 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         # Read permissions are only allowed for any request
         if request.method in permissions.SAFE_METHODS:
             return True
+        
         # Write permissions are only allowed to the owner of the recipe
         return obj.user == request.user

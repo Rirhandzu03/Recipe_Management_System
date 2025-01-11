@@ -4,6 +4,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.filters import SearchFilter
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.exceptions import NotFound
 from .serializers import RecipeSerializer, UserSerializer
 from .permissions import IsOwnerOrReadOnly
 from django.contrib.auth.models import User
@@ -27,7 +28,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-
+    def get_object(self):
+        try:
+            obj = super().get_object()
+            return obj
+        except Recipe.DoesNotExist:
+            raise NotFound(detail="Recipe not found.")
+        
 # Custom Permission
 class IsOwner(BasePermission):
     def has_object_permission(self, request, view, obj):
@@ -65,7 +72,7 @@ class RecipesByIngredientView(ListAPIView):
         return queryset
     
 class RecipeSearchView(ListAPIView):
-    serializer_Class = RecipeSerializer
+    serializer_class = RecipeSerializer
 
     def get_queryset(self):
         title = self.request.query_params.get('title')
@@ -85,7 +92,7 @@ class RecipeSearchView(ListAPIView):
         if preparation_time:
             queryset = queryset.filter(preparation_time__lte=preparation_time)
         if cooking_time:
-            queryset = queryset.filter(title__lte=cooking_time)
+            queryset = queryset.filter(cooking_time__lte=cooking_time)
         if servings:
             queryset = queryset.filter(servings__gte=servings)  
 
@@ -107,4 +114,6 @@ class RecipeDetailView(RetrieveUpdateDestroyAPIView):
                                               
         
     
-     
+
+
+        
