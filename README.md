@@ -1,4 +1,3 @@
-This is my Capstone project.
 
 # Recipe Management System API
 
@@ -21,7 +20,7 @@ The Recipe Management System API is a backend application designed to manage rec
 - **Tools**: Postman for API testing
 
 ## Setup Instructions
-Follow these steps to set up the project locally:
+
 
 1. **Clone the Repository**:
    
